@@ -18,6 +18,7 @@
             --text: #333;
             --text-light: #fff;
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         * {
@@ -95,50 +96,294 @@
             cursor: pointer;
         }
 
-        /* Music Player */
-        .music-player {
+        /* Enhanced Music Player */
+        .music-player-container {
             position: fixed;
             bottom: 20px;
             right: 20px;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 50px;
-            padding: 10px 15px;
-            box-shadow: var(--shadow);
+            width: 350px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .music-player-container.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .music-player-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
+            margin-bottom: 15px;
         }
 
-        .music-player:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        .music-player-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
         }
 
-        .music-control {
+        .close-player {
             background: none;
             border: none;
-            color: var(--primary);
-            font-size: 1.5rem;
+            font-size: 1.2rem;
+            color: var(--dark);
             cursor: pointer;
-            margin: 0 5px;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
-        .music-control:hover {
+        .close-player:hover {
+            color: var(--primary);
+            transform: rotate(90deg);
+        }
+
+        .album-art-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            perspective: 1000px;
+        }
+
+        .album-art {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            animation: rotateAlbum 20s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .album-art.playing {
+            animation-play-state: running;
+        }
+
+        .album-art::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, transparent 60%, rgba(0,0,0,0.1) 100%);
+        }
+
+        .song-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .song-title {
+            font-size: 1.3rem;
+            font-weight: 600;
             color: var(--dark);
+            margin-bottom: 5px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .song-artist {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+            width: 0%;
+            position: relative;
+            transition: width 0.1s linear;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            right: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: var(--text-light);
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .progress-container:hover .progress-bar::after {
+            opacity: 1;
+        }
+
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .player-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--dark);
+            cursor: pointer;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .control-btn:hover {
+            color: var(--primary);
             transform: scale(1.1);
         }
 
-        .music-info {
-            font-size: 0.9rem;
-            margin-left: 10px;
-            max-width: 150px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .play-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--text-light);
+            width: 50px;
+            height: 50px;
+            box-shadow: 0 5px 15px rgba(255, 126, 185, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(255, 126, 185, 0.6);
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .volume-slider {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .song-list {
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .song-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 5px;
+        }
+
+        .song-item:hover {
+            background: rgba(255, 126, 185, 0.1);
+        }
+
+        .song-item.active {
+            background: rgba(255, 126, 185, 0.2);
+        }
+
+        .song-item-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .song-item-info {
+            flex: 1;
+        }
+
+        .song-item-title {
             font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 3px;
+        }
+
+        .song-item-artist {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .song-item-duration {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .music-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1001;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--text-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+        }
+
+        .music-toggle:hover {
+            transform: scale(1.1) rotate(45deg);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
 
         /* Navigation */
@@ -1115,6 +1360,15 @@
             .memory-card {
                 width: 100%;
             }
+            
+            .music-player-container {
+                width: 300px;
+            }
+            
+            .album-art-container {
+                width: 180px;
+                height: 180px;
+            }
         }
 
         @media screen and (max-width: 768px) {
@@ -1169,6 +1423,17 @@
             .countdown-number {
                 font-size: 2rem;
             }
+            
+            .music-player-container {
+                width: 280px;
+                right: 10px;
+                bottom: 10px;
+            }
+            
+            .album-art-container {
+                width: 160px;
+                height: 160px;
+            }
         }
 
         @media screen and (max-width: 576px) {
@@ -1205,6 +1470,18 @@
             
             .countdown-number {
                 font-size: 1.8rem;
+            }
+            
+            .music-player-container {
+                width: calc(100% - 20px);
+                right: 10px;
+                left: 10px;
+                bottom: 80px;
+            }
+            
+            .music-toggle {
+                bottom: 10px;
+                right: 10px;
             }
         }
 
@@ -1247,6 +1524,11 @@
         @keyframes shine {
             0% { transform: translateX(-100%); }
             100% { transform: translateX(100%); }
+        }
+
+        @keyframes rotateAlbum {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .fade-in {
@@ -1307,6 +1589,7 @@
                 opacity: 0;
             }
         }
+        
         /* Love Letters Animation */
         @keyframes letterFloat {
             0% { transform: translateY(0) rotate(0deg); }
@@ -1323,15 +1606,67 @@
     <!-- Floating Hearts Background -->
     <div class="floating-hearts" id="heartsContainer"></div>
 
-    <!-- Music Player -->
-    <div class="music-player">
-        <button class="music-control" id="playBtn"><i class="fas fa-play"></i></button>
-        <button class="music-control" id="pauseBtn" style="display: none;"><i class="fas fa-pause"></i></button>
-        <div class="music-info">Our Song - Beautiful (Bazzi ft. Camila)</div>
-        <audio id="bgMusic" loop>
-            <source src="Bazzi - Beautiful feat. Camila [Official Audio]-yt.savetube.me.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
+    <!-- Enhanced Music Player -->
+    <div class="music-player-container" id="musicPlayer">
+        <div class="music-player-header">
+            <div class="music-player-title">Our Love Playlist</div>
+            <button class="close-player" id="closePlayer"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="album-art-container">
+            <img src="https://i.scdn.co/image/ab67616d0000b273d5fccf9ce09b357048c5c840" alt="Album Art" class="album-art" id="albumArt">
+        </div>
+        <div class="song-info">
+            <div class="song-title" id="songTitle">Beautiful</div>
+            <div class="song-artist" id="songArtist">Bazzi ft. Camila Cabello</div>
+        </div>
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="time-info">
+            <span id="currentTime">0:00</span>
+            <span id="duration">3:00</span>
+        </div>
+        <div class="player-controls">
+            <button class="control-btn" id="prevBtn"><i class="fas fa-step-backward"></i></button>
+            <button class="control-btn play-btn" id="playBtn"><i class="fas fa-play"></i></button>
+            <button class="control-btn" id="nextBtn"><i class="fas fa-step-forward"></i></button>
+        </div>
+        <div class="volume-control">
+            <i class="fas fa-volume-up"></i>
+            <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.01" value="0.7">
+        </div>
+        <div class="song-list">
+            <div class="song-item active" data-src="Bazzi - Beautiful feat. Camila [Official Audio]-yt.savetube.me.mp3" data-title="Beautiful" data-artist="Bazzi ft. Camila Cabello" data-image="https://i.scdn.co/image/ab67616d0000b273d5fccf9ce09b357048c5c840">
+                <img src="6213008470039446387.jpg" alt="Song" class="song-item-img">
+                <div class="song-item-info">
+                    <div class="song-item-title">Beautiful</div>
+                    <div class="song-item-artist">Bazzi ft. Camila Cabello</div>
+                </div>
+                <div class="song-item-duration">3:00</div>
+            </div>
+            <div class="song-item" data-src="Ed Sheeran - Perfect-yt.savetube.me.mp3" data-title="Perfect" data-artist="Ed Sheeran" data-image="https://i.scdn.co/image/ab67616d0000b273604f2229a4fa6f1e46b0bde1">
+                <img src="6213008470039446362.jpg" alt="Song" class="song-item-img">
+                <div class="song-item-info">
+                    <div class="song-item-title">Perfect</div>
+                    <div class="song-item-artist">Ed Sheeran</div>
+                </div>
+                <div class="song-item-duration">4:23</div>
+            </div>
+            </div>
+            <div class="song-item" data-src="Iframe Christina Perri - A Thousand Years [Official Music Video] [rtOvBOTyX00].mp3" data-title="A Thousand Years" data-artist="Christina Perri" data-image="https://i.scdn.co/image/ab67616d0000b273e0dc47dd1584c66ad4492094">
+                <img src="6213008470039446366.jpg" alt="Song" class="song-item-img">
+                <div class="song-item-info">
+                    <div class="song-item-title">A Thousand Years</div>
+                    <div class="song-item-artist">Christina Perri</div>
+                </div>
+                <div class="song-item-duration">4:45</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Music Toggle Button -->
+    <div class="music-toggle" id="musicToggle">
+        <i class="fas fa-music"></i>
     </div>
 
     <header>
@@ -1439,14 +1774,14 @@
                     <div class="timeline-content">
                         <div class="timeline-date">May 16, 2025</div>
                         <h3>First Photobooth Moments</h3>
-                        <p>Our first-ever photobooth moment together! 📸✨ Marks a special memory simple, candid, and full of new beginnings. No fancy poses, just us and the excitement of creating our first snapshot as a team. Can’t wait to fill more pages with moments like this!</p>
+                        <p>Our first-ever photobooth moment together! 📸✨ Marks a special memory simple, candid, and full of new beginnings. No fancy poses, just us and the excitement of creating our first snapshot as a team. Can't wait to fill more pages with moments like this!</p>
                     </div>
                 </div>
                 <div class="timeline-item right fade-in slide-up delay-3">
                     <div class="timeline-content">
                         <div class="timeline-date">May 18, 2025</div>
                         <h3>First Church Visit Together</h3>
-                        <p>A blessed day we’ll never forget—our first time stepping into God’s house side by side. Grateful for this moment of faith, love, and new beginnings. May it be the first of many more prayers and blessings shared together. </p>
+                        <p>A blessed day we'll never forget—our first time stepping into God's house side by side. Grateful for this moment of faith, love, and new beginnings. May it be the first of many more prayers and blessings shared together. </p>
                     </div>
                 </div>
             </div>
@@ -1467,7 +1802,7 @@
                     <img src="6213008470039446362.jpg" alt="Anniversary dinner">
                     <div class="gallery-caption">
                         <h3>First Church Visit Together</h3>
-                        <p>Our first time stepping into God’s house side by side.</p>
+                        <p>Our first time stepping into God's house side by side.</p>
                     </div>
                 </div>
                 <div class="gallery-item fade-in slide-up delay-2" data-category="everyday">
@@ -1520,7 +1855,7 @@
                     <div class="memory-content">
                         <div class="memory-date">May 1, 2025</div>
                         <h3 class="memory-title">All-White & Denim Duo</h3>
-                        <p class="memory-desc">Dressed in crisp white tops and classic denim, we effortlessly mirrored each other’s style, proving that great minds (and outfits) think alike. The earthy brown bags added the perfect touch of warmth, tying our looks together like a shared secret. It wasn’t just about matching it was a fun, unspoken harmony that made the day feel even more special.</p>
+                        <p class="memory-desc">Dressed in crisp white tops and classic denim, we effortlessly mirrored each other's style, proving that great minds (and outfits) think alike. The earthy brown bags added the perfect touch of warmth, tying our looks together like a shared secret. It wasn't just about matching it was a fun, unspoken harmony that made the day feel even more special.</p>
                         <div class="memory-tags">
                             <span class="memory-tag">TwinningVibes</span>
                             <span class="memory-tag">Happy</span>
@@ -1537,21 +1872,21 @@
                 <div class="letter fade-in slide-up">
                     <div class="letter-date">April 4, 2025</div>
                     <div class="letter-content">
-                        "From the first time I heard your laughw arm, bright, and unapologetically you I knew I was lost in the best way. It wasn’t just a sound it was the key to a door I didn’t even know existed. Now, every day with you feels like coming home."
+                        "From the first time I heard your laughw arm, bright, and unapologetically you I knew I was lost in the best way. It wasn't just a sound it was the key to a door I didn't even know existed. Now, every day with you feels like coming home."
                     </div>
                     <div class="letter-author">- To My Love</div>
                 </div>
                 <div class="letter fade-in slide-up delay-1">
                     <div class="letter-date">May 18, 2025</div>
                     <div class="letter-content">
-                        "Our first time stepping into God’s house side by side—a quiet moment, but one that felt like a whispered prayer answered. Holding your hand here, in this sacred place, made me realize how blessed I am to have you. "
+                        "Our first time stepping into God's house side by side—a quiet moment, but one that felt like a whispered prayer answered. Holding your hand here, in this sacred place, made me realize how blessed I am to have you. "
                     </div>
                     <div class="letter-author">- Kenneth</div>
                 </div>
                 <div class="letter fade-in slide-up delay-2">
                     <div class="letter-date">June 9, 2025</div>
                     <div class="letter-content">
-                        "One day, I’ll look beside me and see not just you, but the life we’ve built together tiny hands holding ours, laughter echoing through our home, and a love that only grows deeper with time. I can’t wait for the messy, joyful chaos of raising a family with you, for the quiet moments of gratitude, and for all the memories we’ll create as a team."
+                        "One day, I'll look beside me and see not just you, but the life we've built together tiny hands holding ours, laughter echoing through our home, and a love that only grows deeper with time. I can't wait for the messy, joyful chaos of raising a family with you, for the quiet moments of gratitude, and for all the memories we'll create as a team."
                     </div>
                     <div class="letter-author">- Your Future Husband</div>
                 </div>
@@ -1610,14 +1945,9 @@
         <div class="footer-content">
             <div class="footer-logo"><i class="fas fa-heart"></i>Our<span>Love</span></div>
             <p class="footer-text">"In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine." - Maya Angelou</p>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-pinterest"></i></a>
-                <a href="#"><i class="fab fa-spotify"></i></a>
-                <a href="#"><i class="fas fa-envelope"></i></a>
-            </div>
+            
             <p class="copyright">&copy; <span id="year"></span> Our Eternal Love Story. All rights reserved.</p>
-            <p>Created with <i class="fas fa-heart" style="color: var(--primary); animation: heartbeat 1.5s infinite;"></i> by Us</p>
+            <p>Created with <i class="fas fa-heart" style="color: var(--primary); animation: heartbeat 1.5s infinite;"></i> by Kennethhhh</p>
         </div>
     </footer>
 
@@ -1625,27 +1955,172 @@
         // Set current year in footer
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        // Music Player
-        const bgMusic = document.getElementById('bgMusic');
+        // Enhanced Music Player Functionality
+        const musicPlayer = document.getElementById('musicPlayer');
+        const musicToggle = document.getElementById('musicToggle');
+        const closePlayer = document.getElementById('closePlayer');
         const playBtn = document.getElementById('playBtn');
-        const pauseBtn = document.getElementById('pauseBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const albumArt = document.getElementById('albumArt');
+        const songTitle = document.getElementById('songTitle');
+        const songArtist = document.getElementById('songArtist');
+        const songItems = document.querySelectorAll('.song-item');
         
-        // Start with music paused
-        bgMusic.pause();
-        pauseBtn.style.display = 'none';
+        // Create audio element
+        const audio = new Audio();
+        let isPlaying = false;
+        let currentSongIndex = 0;
         
-        playBtn.addEventListener('click', function() {
-            bgMusic.play();
-            playBtn.style.display = 'none';
-            pauseBtn.style.display = 'inline-block';
+        // Songs data
+        const songs = [
+            {
+                title: "Beautiful",
+                artist: "Bazzi ft. Camila Cabello",
+                src: "Bazzi - Beautiful feat. Camila [Official Audio]-yt.savetube.me.mp3",
+                image: "6213008470039446387.jpg",
+                duration: "3:00"
+            },
+            {
+                title: "Perfect",
+                artist: "Ed Sheeran",
+                src: "Ed Sheeran - Perfect-yt.savetube.me.mp3",
+                image: "6213008470039446362.jpg",
+                duration: "4:23"
+            },
+            {
+                title: "A Thousand Years",
+                artist: "Christina Perri",
+                src: "Iframe Christina Perri - A Thousand Years [Official Music Video] [rtOvBOTyX00].mp3",
+                image: "6213008470039446366.jpg",
+                duration: "4:45"
+            }
+            
+        ];
+        
+        // Load song
+        function loadSong(songIndex) {
+            const song = songs[songIndex];
+            audio.src = song.src;
+            songTitle.textContent = song.title;
+            songArtist.textContent = song.artist;
+            albumArt.src = song.image;
+            durationEl.textContent = song.duration;
+            
+            // Update active song in playlist
+            songItems.forEach(item => item.classList.remove('active'));
+            songItems[songIndex].classList.add('active');
+        }
+        
+        // Play song
+        function playSong() {
+            isPlaying = true;
+            playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            albumArt.classList.add('playing');
+            audio.play();
+        }
+        
+        // Pause song
+        function pauseSong() {
+            isPlaying = false;
+            playBtn.innerHTML = '<i class="fas fa-play"></i>';
+            albumArt.classList.remove('playing');
+            audio.pause();
+        }
+        
+        // Previous song
+        function prevSong() {
+            currentSongIndex--;
+            if (currentSongIndex < 0) {
+                currentSongIndex = songs.length - 1;
+            }
+            loadSong(currentSongIndex);
+            if (isPlaying) {
+                playSong();
+            }
+        }
+        
+        // Next song
+        function nextSong() {
+            currentSongIndex++;
+            if (currentSongIndex > songs.length - 1) {
+                currentSongIndex = 0;
+            }
+            loadSong(currentSongIndex);
+            if (isPlaying) {
+                playSong();
+            }
+        }
+        
+        // Update progress bar
+        function updateProgress(e) {
+            if (isPlaying) {
+                const { duration, currentTime } = e.srcElement;
+                const progressPercent = (currentTime / duration) * 100;
+                progressBar.style.width = `${progressPercent}%`;
+                
+                // Calculate display for current time
+                const currentMinutes = Math.floor(currentTime / 60);
+                let currentSeconds = Math.floor(currentTime % 60);
+                if (currentSeconds < 10) {
+                    currentSeconds = `0${currentSeconds}`;
+                }
+                currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
+            }
+        }
+        
+        // Set progress bar
+        function setProgress(e) {
+            const width = this.clientWidth;
+            const clickX = e.offsetX;
+            const duration = audio.duration;
+            audio.currentTime = (clickX / width) * duration;
+        }
+        
+        // Set volume
+        function setVolume() {
+            audio.volume = volumeSlider.value;
+        }
+        
+        // Toggle music player
+        function toggleMusicPlayer() {
+            musicPlayer.classList.toggle('active');
+        }
+        
+        // Event listeners
+        playBtn.addEventListener('click', () => {
+            isPlaying ? pauseSong() : playSong();
         });
         
-        pauseBtn.addEventListener('click', function() {
-            bgMusic.pause();
-            pauseBtn.style.display = 'none';
-            playBtn.style.display = 'inline-block';
+        prevBtn.addEventListener('click', prevSong);
+        nextBtn.addEventListener('click', nextSong);
+        
+        audio.addEventListener('timeupdate', updateProgress);
+        audio.addEventListener('ended', nextSong);
+        
+        progressContainer.addEventListener('click', setProgress);
+        volumeSlider.addEventListener('input', setVolume);
+        
+        musicToggle.addEventListener('click', toggleMusicPlayer);
+        closePlayer.addEventListener('click', toggleMusicPlayer);
+        
+        // Click on song in playlist
+        songItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                currentSongIndex = index;
+                loadSong(currentSongIndex);
+                playSong();
+            });
         });
-
+        
+        // Load first song
+        loadSong(currentSongIndex);
+        
         // Mobile Menu Toggle
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
         const navLinks = document.querySelector('.nav-links');
@@ -1916,34 +2391,6 @@
         for (let i = 0; i < 10; i++) {
             setTimeout(createHeart, i * 300);
         }
-
-        // Add CSS for floating hearts
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes float-up {
-                0% {
-                    transform: translateY(100vh) scale(0);
-                    opacity: 0;
-                }
-                10% {
-                    opacity: 1;
-                }
-                90% {
-                    opacity: 1;
-                }
-                100% {
-                    transform: translateY(-10vh) scale(1);
-                    opacity: 0;
-                }
-            }
-            
-            @keyframes pulse {
-                0% { transform: scale(1); }
-                50% { transform: scale(1.1); }
-                100% { transform: scale(1); }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>
