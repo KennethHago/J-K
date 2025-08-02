@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>J-K Our Eternal Love Story</title>
+    <title>Our Eternal Love Story</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -1494,39 +1494,6 @@
             color: var(--text);
         }
 
-        /* Heart Bubble Background */
-        .heart-bubbles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .heart-bubble {
-            position: absolute;
-            bottom: -100px;
-            background: var(--primary);
-            border-radius: 50%;
-            opacity: 0.5;
-            animation: float-up linear infinite;
-            filter: blur(5px);
-            transform: translateZ(0);
-        }
-
-        .heart-bubble::before {
-            content: '❤';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 1rem;
-        }
-
         /* Responsive Design */
         @media screen and (max-width: 992px) {
             h1 {
@@ -1737,34 +1704,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        @keyframes float-up {
-            0% {
-                transform: translateY(0) scale(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.5;
-            }
-            100% {
-                transform: translateY(-100vh) scale(1.5);
-                opacity: 0;
-            }
-        }
-
-        @keyframes float-up-bubble {
-            0% {
-                transform: translateY(0) scale(0.5);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.5;
-            }
-            100% {
-                transform: translateY(-100vh) scale(1);
-                opacity: 0;
-            }
-        }
-
         .fade-in {
             opacity: 0;
             transition: opacity 0.8s ease, transform 0.8s ease;
@@ -1805,6 +1744,23 @@
             font-size: 1rem;
             animation: float-up linear forwards;
             pointer-events: none;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1);
+                opacity: 0;
+            }
         }
         
         /* Love Letters Animation */
@@ -1850,90 +1806,11 @@
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
-
-        /* Sparkle Effect */
-        .sparkle {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background: white;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            animation: sparkle 1s ease-out forwards;
-        }
-
-        @keyframes sparkle {
-            0% {
-                transform: scale(0);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(1.5);
-                opacity: 0;
-            }
-        }
-
-        /* Love Confetti */
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background-color: var(--primary);
-            opacity: 0;
-            animation: confetti-fall 5s linear forwards;
-            z-index: 1000;
-        }
-
-        @keyframes confetti-fall {
-            0% {
-                transform: translateY(-100vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-        /* Floating Hearts Border */
-        .heart-border {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .border-heart {
-            position: absolute;
-            color: var(--primary);
-            opacity: 0.1;
-            font-size: 2rem;
-            animation: float-side linear infinite;
-        }
-
-        @keyframes float-side {
-            0% {
-                transform: translateX(-100px);
-            }
-            100% {
-                transform: translateX(calc(100vw + 100px));
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- Heart Bubble Background -->
-    <div class="heart-bubbles" id="heartBubbles"></div>
-
     <!-- Floating Hearts Background -->
     <div class="floating-hearts" id="heartsContainer"></div>
-
-    <!-- Heart Border -->
-    <div class="heart-border" id="heartBorder"></div>
 
     <!-- Enhanced Music Player -->
     <div class="music-player-container" id="musicPlayer">
@@ -2051,7 +1928,7 @@
                     
                     <div class="couple-stats fade-in slide-up delay-2">
                         <div class="stat-item">
-                            <div class="stat-number" id="MonthsTogether">10</div>
+                            <div class="stat-number" id="yearsTogether">8</div>
                             <div class="stat-label">Months Together</div>
                         </div>
                         <div class="stat-item">
@@ -2749,9 +2626,6 @@
             setTimeout(() => {
                 this.classList.remove('pulse');
             }, 300);
-
-            // Create confetti effect
-            createConfetti();
         });
 
         // Form submission
@@ -2774,9 +2648,6 @@
                 submitBtn.style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
                 this.reset();
             }, 3000);
-
-            // Create hearts animation
-            createHearts();
         });
 
         // Scroll animations
@@ -2875,179 +2746,6 @@
         for (let i = 0; i < 10; i++) {
             setTimeout(createHeart, i * 300);
         }
-
-        // Heart bubbles background
-        const heartBubbles = document.getElementById('heartBubbles');
-        
-        function createHeartBubble() {
-            const bubble = document.createElement('div');
-            bubble.classList.add('heart-bubble');
-            
-            // Random size
-            const size = Math.random() * 60 + 20;
-            bubble.style.width = `${size}px`;
-            bubble.style.height = `${size}px`;
-            
-            // Random position
-            const xPos = Math.random() * window.innerWidth;
-            bubble.style.left = `${xPos}px`;
-            
-            // Random color
-            const hue = Math.floor(Math.random() * 30) + 330; // Pink/red colors
-            bubble.style.backgroundColor = `hsla(${hue}, 100%, 70%, 0.3)`;
-            
-            // Random animation duration
-            const duration = Math.random() * 15 + 10;
-            bubble.style.animationDuration = `${duration}s`;
-            
-            heartBubbles.appendChild(bubble);
-            
-            // Remove after animation completes
-            setTimeout(() => {
-                bubble.remove();
-            }, duration * 1000);
-        }
-        
-        // Create heart bubbles periodically
-        setInterval(createHeartBubble, 500);
-        
-        // Initial heart bubbles
-        for (let i = 0; i < 15; i++) {
-            setTimeout(createHeartBubble, i * 500);
-        }
-
-        // Heart border animation
-        const heartBorder = document.getElementById('heartBorder');
-        
-        function createBorderHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('border-heart');
-            heart.innerHTML = '<i class="fas fa-heart"></i>';
-            
-            // Random position on top or bottom
-            const topOrBottom = Math.random() > 0.5 ? 'top' : 'bottom';
-            heart.style[topOrBottom] = '-50px';
-            
-            // Random horizontal position
-            const leftPos = Math.random() * window.innerWidth;
-            heart.style.left = `${leftPos}px`;
-            
-            // Random size
-            const size = Math.random() * 2 + 1;
-            heart.style.fontSize = `${size}rem`;
-            
-            // Random color variation
-            const hue = Math.floor(Math.random() * 30) + 330; // Pink/red colors
-            heart.style.color = `hsla(${hue}, 100%, 70%, 0.2)`;
-            
-            // Random animation duration
-            const duration = Math.random() * 30 + 20;
-            heart.style.animationDuration = `${duration}s`;
-            
-            heartBorder.appendChild(heart);
-            
-            // Remove after animation completes
-            setTimeout(() => {
-                heart.remove();
-            }, duration * 1000);
-        }
-        
-        // Create border hearts periodically
-        setInterval(createBorderHeart, 1000);
-        
-        // Initial border hearts
-        for (let i = 0; i < 10; i++) {
-            setTimeout(createBorderHeart, i * 1000);
-        }
-
-        // Sparkle effect on click
-        document.addEventListener('click', function(e) {
-            const sparkle = document.createElement('div');
-            sparkle.classList.add('sparkle');
-            sparkle.style.left = `${e.clientX}px`;
-            sparkle.style.top = `${e.clientY}px`;
-            document.body.appendChild(sparkle);
-            
-            // Remove after animation completes
-            setTimeout(() => {
-                sparkle.remove();
-            }, 1000);
-        });
-
-        // Create confetti effect
-        function createConfetti() {
-            for (let i = 0; i < 50; i++) {
-                setTimeout(() => {
-                    const confetti = document.createElement('div');
-                    confetti.classList.add('confetti');
-                    
-                    // Random position
-                    const xPos = Math.random() * window.innerWidth;
-                    confetti.style.left = `${xPos}px`;
-                    
-                    // Random size
-                    const size = Math.random() * 10 + 5;
-                    confetti.style.width = `${size}px`;
-                    confetti.style.height = `${size}px`;
-                    
-                    // Random color
-                    const colors = [var(--primary), var(--secondary), var(--accent), var(--gold), '#ff7eb9', '#7afcff'];
-                    const color = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.backgroundColor = color;
-                    
-                    // Random animation duration
-                    const duration = Math.random() * 3 + 2;
-                    confetti.style.animationDuration = `${duration}s`;
-                    
-                    document.body.appendChild(confetti);
-                    
-                    // Remove after animation completes
-                    setTimeout(() => {
-                        confetti.remove();
-                    }, duration * 1000);
-                }, i * 50);
-            }
-        }
-
-        // Create hearts animation for form submission
-        function createHearts() {
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => {
-                    const heart = document.createElement('div');
-                    heart.classList.add('heart-particle');
-                    heart.innerHTML = '<i class="fas fa-heart"></i>';
-                    
-                    // Position around the form
-                    const form = document.querySelector('.contact-form');
-                    const formRect = form.getBoundingClientRect();
-                    const xPos = formRect.left + Math.random() * formRect.width;
-                    const yPos = formRect.top + Math.random() * formRect.height;
-                    
-                    heart.style.left = `${xPos}px`;
-                    heart.style.top = `${yPos}px`;
-                    
-                    // Random size
-                    const size = Math.random() * 1 + 0.5;
-                    heart.style.fontSize = `${size}rem`;
-                    
-                    // Random color variation
-                    const hue = Math.floor(Math.random() * 30) + 330; // Pink/red colors
-                    heart.style.color = `hsl(${hue}, 100%, 70%)`;
-                    
-                    // Random animation duration
-                    const duration = Math.random() * 3 + 2;
-                    heart.style.animationDuration = `${duration}s`;
-                    
-                    document.body.appendChild(heart);
-                    
-                    // Remove after animation completes
-                    setTimeout(() => {
-                        heart.remove();
-                    }, duration * 1000);
-                }, i * 100);
-            }
-        }
     </script>
 </body>
 </html>
-
