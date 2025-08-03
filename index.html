@@ -2676,37 +2676,30 @@
         });
 
            function updateCountdown() {
-            const now = new Date();
-            let nextAnniversary = new Date(now.getFullYear(), 7, 1); // August is 7 (0-indexed)
+        const now = new Date();
+        let nextAnniversary = new Date(now.getFullYear(), 7, 1); // August = 7 (0-indexed)
 
-            // If August 1 has passed this year, count down to next year's August 1
-            if (now > nextAnniversary) {
-                nextAnniversary = new Date(now.getFullYear() + 1, 7, 1);
-            }
-
-            const diff = nextAnniversary - now;
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-            document.getElementById('days').textContent = days.toString().padStart(2, '0');
-            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-
-            // Years together (since 2025)
-            const firstYear = 2025;
-            const today = new Date();
-            const years = today.getFullYear() - firstYear;
-            document.getElementById('yearsTogether').textContent = `Years Together: ${years}`;
+        // If August 1 has already passed this year, use next year
+        if (now > nextAnniversary) {
+            nextAnniversary = new Date(now.getFullYear() + 1, 7, 1);
         }
 
-        // Run every second
-        updateCountdown(); // initial call
-        setInterval(updateCountdown, 1000);
+        const diff = nextAnniversary - now;
 
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('days').textContent = days.toString().padStart(2, '0');
+        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+    }
+
+    // Run countdown every second
+    updateCountdown(); // first run
+    setInterval(updateCountdown, 1000); // repeat every 1 second
         // Floating hearts animation
         const heartsContainer = document.getElementById('heartsContainer');
         
@@ -2749,6 +2742,7 @@
     </script>
 </body>
 </html>
+
 
 
 
