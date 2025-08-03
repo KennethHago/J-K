@@ -2675,14 +2675,14 @@
             el.classList.add('visible');
         });
 
-        // Countdown to anniversary (May 15 every year)
+         // Countdown to anniversary (August 1 every year)
         function updateCountdown() {
             const now = new Date();
-            let nextAnniversary = new Date(now.getFullYear(), 8, 1); // May is month 4 (0-indexed)
-            
+            let nextAnniversary = new Date(now.getFullYear(), 7, 1); // August is month 7 (0-indexed)
+
             // If the anniversary has passed this year, set for next year
             if (now > nextAnniversary) {
-                nextAnniversary = new Date(now.getFullYear() + 1, 1, 1);
+                nextAnniversary = new Date(now.getFullYear() + 1, 7, 1);
             }
             
             const diff = nextAnniversary - now;
@@ -2749,6 +2749,7 @@
     </script>
 </body>
 </html>
+
 
 
 
