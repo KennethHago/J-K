@@ -2675,37 +2675,37 @@
             el.classList.add('visible');
         });
 
-         // Countdown to anniversary (August 1 every year)
-        function updateCountdown() {
+           function updateCountdown() {
             const now = new Date();
-            let nextAnniversary = new Date(now.getFullYear(), 7, 1); // August is month 7 (0-indexed)
+            let nextAnniversary = new Date(now.getFullYear(), 7, 1); // August is 7 (0-indexed)
 
-            // If the anniversary has passed this year, set for next year
+            // If August 1 has passed this year, count down to next year's August 1
             if (now > nextAnniversary) {
                 nextAnniversary = new Date(now.getFullYear() + 1, 7, 1);
             }
-            
+
             const diff = nextAnniversary - now;
-            
+
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
+
             document.getElementById('days').textContent = days.toString().padStart(2, '0');
             document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
             document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
             document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-            
-            // Update years together
+
+            // Years together (since 2025)
             const firstYear = 2025;
-            const currentYear = new Date().getFullYear();
-            document.getElementById('yearsTogether').textContent = currentYear - firstYear;
+            const today = new Date();
+            const years = today.getFullYear() - firstYear;
+            document.getElementById('yearsTogether').textContent = `Years Together: ${years}`;
         }
-        
-        // Update every second
-        updateCountdown();
-            setTimeout(updateCountdown, 1000);
+
+        // Run every second
+        updateCountdown(); // initial call
+        setInterval(updateCountdown, 1000);
 
         // Floating hearts animation
         const heartsContainer = document.getElementById('heartsContainer');
@@ -2749,6 +2749,7 @@
     </script>
 </body>
 </html>
+
 
 
 
