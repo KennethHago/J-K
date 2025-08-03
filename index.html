@@ -2698,14 +2698,14 @@
             document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
             
             // Update years together
-            const firstYear = 2018;
+            const firstYear = 2025;
             const currentYear = new Date().getFullYear();
             document.getElementById('yearsTogether').textContent = currentYear - firstYear;
         }
         
         // Update every second
         updateCountdown();
-        setInterval(updateCountdown, 1000);
+            setTimeout(updateCountdown, 1000);
 
         // Floating hearts animation
         const heartsContainer = document.getElementById('heartsContainer');
@@ -2749,6 +2749,7 @@
     </script>
 </body>
 </html>
+
 
 
 
