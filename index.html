@@ -2675,13 +2675,13 @@
             el.classList.add('visible');
         });
 
-           function updateCountdown() {
+       function updateCountdown() {
         const now = new Date();
-        let nextAnniversary = new Date(now.getFullYear(), 7, 1); // August = 7 (0-indexed)
+        let nextAnniversary = new Date(now.getFullYear(), 6, 1); // July is month 6 (0-indexed)
 
-        // If August 1 has already passed this year, use next year
+        // If July 1 has already passed this year, count down to next year
         if (now > nextAnniversary) {
-            nextAnniversary = new Date(now.getFullYear() + 1, 7, 1);
+            nextAnniversary = new Date(now.getFullYear() + 1, 6, 1);
         }
 
         const diff = nextAnniversary - now;
@@ -2697,9 +2697,10 @@
         document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
     }
 
-    // Run countdown every second
-    updateCountdown(); // first run
-    setInterval(updateCountdown, 1000); // repeat every 1 second
+    // Start countdown and update every second
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
         // Floating hearts animation
         const heartsContainer = document.getElementById('heartsContainer');
         
@@ -2742,6 +2743,7 @@
     </script>
 </body>
 </html>
+
 
 
 
